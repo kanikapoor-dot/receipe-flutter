@@ -1,0 +1,1 @@
+const apiKey = 'https://api.edamam.com/search?q=chicken&app_id=6db5e15c&app_key=2adc6f050867b14845dc1ed7fd30cc07';
