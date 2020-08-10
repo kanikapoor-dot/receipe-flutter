@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:receipe/constants.dart';
+import 'package:receipe/services/networks.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -18,26 +19,20 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.all(20.0),
+              padding: EdgeInsets.all(10.0),
               child: RecipeSearch(),
             ),
             Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(left: 8.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(100.0),
-                    ),
-                  ),
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 25.0, horizontal: 15.0),
-                    child: ListView(
-                      children: <Widget>[],
-                    ),
-                  ),
+              child: Container(
+                padding: EdgeInsets.all(20.0),
+                margin: EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
+                  color: kCyanColor,
+                    boxShadow: kSearchBoxShadow,
+                    borderRadius: BorderRadius.circular(30.0),
+                ),
+                child: ListView(
+                  children: <Widget>[],
                 ),
               ),
             ),
@@ -48,56 +43,79 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class RecipeSearch extends StatelessWidget {
+class RecipeSearch extends StatefulWidget {
+  @override
+  _RecipeSearchState createState() => _RecipeSearchState();
+}
+
+class _RecipeSearchState extends State<RecipeSearch> {
+  String recipesName;
+  TextEditingController _myController = TextEditingController();
+
+  @override
+  void dispose() {
+    _myController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.all(0.0),
-            decoration: BoxDecoration(
-              color: kCyanColor,
-              boxShadow: kSearchBoxShadow,
-              borderRadius: BorderRadius.circular(100.0),
+      children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+            color: kCyanColor,
+            boxShadow: kSearchBoxShadow,
+            borderRadius: BorderRadius.circular(100.0),
+          ),
+          child: TextField(
+            controller: _myController,
+            onChanged: (val) {
+              recipesName = val;
+            },
+            textAlign: TextAlign.center,
+            cursorColor: Colors.white,
+            textCapitalization: TextCapitalization.sentences,
+            style: TextStyle(
+              fontFamily: kFontArch,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 1.0,
             ),
-            child: TextField(
-              textAlign: TextAlign.center,
-              cursorColor: Colors.white,
-              textCapitalization: TextCapitalization.sentences,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: 'Eg.chicken',
+              suffixIcon: Icon(Icons.search,color: Colors.white54,),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 20.0,
+        ),
+        Container(
+          padding: EdgeInsets.all(0.0),
+          decoration: BoxDecoration(
+            color: kCyanColor,
+            boxShadow: kSearchBoxShadow,
+            borderRadius: BorderRadius.circular(100.0),
+          ),
+          child: FlatButton(
+            onPressed: () async {
+              _myController.clear();
+             NetworkRequest networkRequest =  NetworkRequest(recipeName: recipesName);
+             await networkRequest.getData();
+             recipesName = null;
+            },
+            child: Text(
+              'Search Recipes',
               style: TextStyle(
                 fontFamily: kFontArch,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 1.0,
-              ),
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Eg.chicken',
-                contentPadding: EdgeInsets.symmetric(horizontal: 10.0)
+                fontSize: 17.0,
               ),
             ),
           ),
-          SizedBox(
-            height: 20.0,
-          ),
-          Container(
-            padding: EdgeInsets.all(0.0),
-            decoration: BoxDecoration(
-              color: kCyanColor,
-              boxShadow: kSearchBoxShadow,
-              borderRadius: BorderRadius.circular(100.0),
-            ),
-            child: FlatButton(
-              onPressed: (){},
-              child: Text(
-                'Search',
-                style: TextStyle(
-                  fontFamily: kFontArch,
-                ),
-              ),
-            ),
-          ),
-        ],
+        ),
+      ],
     );
   }
 }
