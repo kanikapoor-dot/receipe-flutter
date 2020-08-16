@@ -8,7 +8,7 @@ const kCyanColor = Color(0xff03989E);
 const kSearchBoxShadow = [
   BoxShadow(
     color: Color.fromRGBO(0, 0, 0, 0.5),
-    offset: Offset(6.0, 3.0),
+    offset: Offset(3.0, 3.0),
     blurRadius: 10.0,
   ),
   BoxShadow(

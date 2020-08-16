@@ -4,22 +4,20 @@ import 'dart:convert';
 
 class NetworkRequest {
   NetworkRequest({this.recipeName});
+
   final String recipeName;
 
   Future getData() async {
     http.Response response = await http.get('$kApiKey&q=$recipeName');
     try {
-      if(response.statusCode == 200) {
+      if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         return data['hits'];
       } else {
         print(response.statusCode);
       }
-    }
-    catch(e) {
+    } catch (e) {
       print(e);
     }
   }
-
 }
-
