@@ -26,7 +26,6 @@ class _DetailScreenState extends State<DetailScreen> {
     finalUrl = widget.websiteUrl;
     if (finalUrl.contains('http://')) {
       finalUrl = widget.websiteUrl.replaceAll('http://', 'https://');
-      print(finalUrl);
     }
   }
 
@@ -49,17 +48,19 @@ class _DetailScreenState extends State<DetailScreen> {
               fontSize: 20.0),
         ),
       ),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: WebView(
-          initialUrl: finalUrl,
-          javascriptMode: JavascriptMode.unrestricted,
-          onWebViewCreated: (WebViewController webViewController){
-            setState(() {
-              _controller.complete(webViewController);
-            });
-          },
+      body: SafeArea(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: WebView(
+            initialUrl: finalUrl,
+            javascriptMode: JavascriptMode.unrestricted,
+            onWebViewCreated: (WebViewController webViewController){
+              setState(() {
+                _controller.complete(webViewController);
+              });
+            },
+          ),
         ),
       ),
     );
