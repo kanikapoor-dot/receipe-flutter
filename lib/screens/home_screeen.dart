@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:receipe/constants.dart';
 import 'package:receipe/model/recipemodel.dart';
+import 'package:receipe/screens/Details_screen.dart';
 import 'package:receipe/screens/search_screen.dart';
 import 'package:receipe/services/networks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -140,62 +141,73 @@ class GridBuilderMyCustom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      gridDelegate:
-          SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 200.0),
+    return ListView.builder(
       itemCount: recipes.length,
       itemBuilder: (context, index) {
-        return Container(
-          height: MediaQuery.of(context).size.height * 0.20,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: kSearchBoxShadow,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10.0),
-                topRight: Radius.circular(10.0),
-                bottomRight: Radius.circular(5.0),
-                bottomLeft: Radius.circular(5.0)),
-          ),
-          margin: EdgeInsets.all(10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Expanded(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(10.0),
-                      topLeft: Radius.circular(10.0)),
-                  child: Image.network(
-                    recipes[index].image,
-                    fit: BoxFit.fitWidth,
+        return FlatButton(
+          padding: EdgeInsets.all(0),
+          onPressed: () {
+            Navigator.push(
+              context,
+              CupertinoPageRoute(
+                builder: (build) => DetailScreen(
+                  websiteUrl: recipes[index].postUrl,
+                ),
+              ),
+            );
+          },
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.25,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: kSearchBoxShadow,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10.0),
+                  topRight: Radius.circular(10.0),
+                  bottomRight: Radius.circular(5.0),
+                  bottomLeft: Radius.circular(5.0)),
+            ),
+            margin: EdgeInsets.all(10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(10.0),
+                        topLeft: Radius.circular(10.0)),
+                    child: Image.network(
+                      recipes[index].image,
+                      fit: BoxFit.fitWidth,
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 5.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      recipes[index].label,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    Text(
-                      recipes[index].source,
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontSize: 10.0,
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 8.0, vertical: 5.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        recipes[index].label,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w500),
                       ),
-                    ),
-                  ],
+                      Text(
+                        recipes[index].source,
+                        style: TextStyle(
+                          color: Colors.black54,
+                          fontSize: 15.0,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
